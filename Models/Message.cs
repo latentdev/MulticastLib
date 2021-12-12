@@ -28,6 +28,8 @@ namespace MulticastLib.Models
         /// </summary>
         public string Payload { get; private set; }
 
+        #endregion
+
         #region Constructors
 
         /// <summary>
