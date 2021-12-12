@@ -11,10 +11,13 @@ using MulticastLib.Interfaces;
 using MulticastLib.Models;
 using System.Net;
 
+//Create the NetworkManager object and subscribe to the MessageReceived event
 var multicast = new NetworkManager();
 multicast.MessageReceived += Multicast_MessageReceived;
+
 var localIP = NetworkUtilities.GetFastestInterfaceAddress();
 var multicastGroupIP = IPAddress.Parse("239.255.0.1");
+//Start the listening for messages from the multicast group
 multicast.StartListener(localIP, multicastGroupIP);
 
 Console.WriteLine($"Connected to {multicastGroupIP} on {localIP}");
@@ -23,6 +26,7 @@ await Task.Run(async () =>
 { 
     while(true)
     {
+        //Send a message
         var message = new Message(localIP.ToString(), Console.ReadLine());
         await multicast.SendMessage(message);
     }
@@ -30,6 +34,7 @@ await Task.Run(async () =>
 
 void Multicast_MessageReceived(object? sender, IMessage e)
 {
+    //When a message is received write it to the console
     Console.WriteLine($"{e.IP} : {e.Payload}");
 }
 ```
